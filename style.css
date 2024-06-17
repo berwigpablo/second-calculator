@@ -39,7 +39,7 @@ body{
     flex-direction: column-reverse;
 }
 
-.display{
+.calcDisplay{
     background-color: rgb(96, 150, 96);
     width: 420px;
     height: 80px;
@@ -48,6 +48,13 @@ body{
     box-shadow: 2px 2px black;
     margin-bottom: 25px;
     order: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.calcDisplay .displayText{
+    padding: 0px 8px 5px 0px;
 }
 
 .buttons{
@@ -123,6 +130,6 @@ body{
     background-color: rgb(228, 228, 24);
 }
 
-div.clicked{
+button.clicked{
     box-shadow: inset 3px 3px black;
 }
