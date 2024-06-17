@@ -67,7 +67,7 @@ body{
     flex-wrap: wrap;
 }
 
-.numbers div {
+.numbers button {
     background-color: grey;
     border: 1px solid black;
     border-radius: 4px;
@@ -75,6 +75,9 @@ body{
     flex: 1 0 auto;
     height: 80px;
     width: 80px;
+    font-family: calculatorFont;
+    font-size: 28px;
+    font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -89,13 +92,16 @@ body{
     justify-content: space-evenly;
 }
 
-.operators div {
+.operators button {
     border: 1px solid black;
     border-radius: 4px;
     box-shadow: 2px 2px black;
     flex: 1 0 auto;
     height: 90px;
     width: 70px;
+    font-family: calculatorFont;
+    font-size: 30px;
+    font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
