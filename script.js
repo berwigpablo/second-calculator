@@ -2,6 +2,7 @@ const numbers = Array.from(document.querySelector('.numbers').children);
 const operators = Array.from(document.querySelector('.operators').children);
 const display = document.querySelector('.displayText');
 const clear = document.querySelector('.clear');
+let char = '';
 let firstString = '';
 let secondString = '';
 
@@ -19,15 +20,16 @@ function clearDisplay(){
 }
 
 function checkButton(event){
-    buttonClick(event)
+    if(event.key === "Escape"){
+        clearDisplay();
+    } else if(Number(event.key)){
+        updateDisplay(event);
+    }
 }
 
 function buttonClick(event){
-    console.log(event);
-
     if(event.target.classList.value === 'clear' || event.key === "Escape"){
         clearDisplay()
-
     } else{
         let char = event.target;
         char.classList.toggle('clicked');
@@ -39,8 +41,13 @@ function buttonClick(event){
 }
 
 function updateDisplay(button){
+    if(button.key){
+        char = button.key
+    } else{
+        char = button.textContent;
+    }
+    console.log(char);
     console.log(button);
-    char = button.textContent;
     firstString += char;
 
     display.textContent += char;
