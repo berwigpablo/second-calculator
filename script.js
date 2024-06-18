@@ -23,9 +23,42 @@ function clearDisplay(){
     nextOperator = '';
 }
 
+function undo(){
+    let undoString = '';
+
+    if(secondString){
+        undoString = secondString.split('').splice(1, secondString.length - 1).join('');
+        secondString = undoString;
+        
+        display.textContent = firstString + operator + secondString;
+
+    } else if(operator){
+        operator = '';
+        display.textContent = firstString;
+
+    } else if(firstString){
+        if(firstString.length === 1){
+            firstString = '';
+            display.textContent = '';
+
+        }else{
+            console.log(firstString);
+            undoString = firstString.split('').splice(1, firstString.length - 1).join('');
+            firstString = undoString;
+
+            display.textContent = firstString;
+        }
+
+    } else{
+        return
+    }
+}
+
 function checkButton(event){
     if(event.key === "Escape"){
         clearDisplay();
+    }else if(event.key === "Backspace"){
+        undo();
     }else if(Number(event.key)){
         updateDisplay(event);
     }
@@ -35,11 +68,11 @@ function buttonClick(event){
     if(event.target.classList.value === 'clear' || event.key === "Escape"){
         clearDisplay()
 
-    }else if(event.target.parentNode.classList.value === "operators" && event.target.textContent !== '='){
+    }else if(event.target.parentNode.classList.value === "operators"){
         if(event.type === "mouseup"){
             addOperator(event.target.textContent);
         }
-    } else{
+    }else{
         let char = event.target;
         char.classList.toggle('clicked');
 
@@ -51,19 +84,16 @@ function buttonClick(event){
 
 function addOperator(nextOperator){
     if(operator || nextOperator === '='){
-        console.log(nextOperator);
         operate(nextOperator);
+    } else{
+        operator = nextOperator;
+        display.textContent += operator;
     }
-
-    operator = nextOperator;
-
-    display.textContent += operator;
 }
 
 function updateDisplay(button){
     if(button.key){
         char = button.key
-
     } else{
         char = button.textContent;
     }
@@ -85,21 +115,32 @@ function updateDisplay(button){
 function operate(nextOperator){
     if(nextOperator === '=' && !operator){
         result = firstString;
-        operator = '';
+        nextOperator = '';
         console.log(nextOperator, operator);
     }
 
-        if(operator === '+'){
-            result = Number(firstString) + Number(secondString);
-        } else if(operator === '-'){
-            result = Number(firstString) - Number(secondString);
-        } else if(operator === '÷'){
-            result = Number(firstString) / Number(secondString);
-        } else if(operator === 'x'){
-            result = Number(firstString) * Number(secondString);
-        }
+    if(operator === '+'){
+        result = Number(firstString) + Number(secondString);
+    } else if(operator === '-'){
+        result = Number(firstString) - Number(secondString);
+    } else if(operator === '÷'){
+        result = Number(firstString) / Number(secondString);
+    } else if(operator === 'x'){
+        result = Number(firstString) * Number(secondString);
+    }
 
+    if(nextOperator !== '='){
+        operator = nextOperator;
+        display.textContent = result + operator;
+        firstString = result.toString();
+
+    } else if(nextOperator === '='){
+        operator = '';
+        nextOperator = '';
         display.textContent = result;
-        firstString = result;
-        secondString = '';
+        firstString = result.toString();
+    }
+
+    firstString = result.toString();
+    secondString = '';
 }
