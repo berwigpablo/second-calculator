@@ -22,8 +22,6 @@ function clearDisplay(){
 function checkButton(event){
     if(event.key === "Escape"){
         clearDisplay();
-    }else if(event.parentNode.classList === "operators"){
-        console.log(event);
     }else if(Number(event.key)){
         updateDisplay(event);
     }
@@ -32,6 +30,10 @@ function checkButton(event){
 function buttonClick(event){
     if(event.target.classList.value === 'clear' || event.key === "Escape"){
         clearDisplay()
+
+    }else if(event.parentNode.classList === 'operators'){
+        addOperator(event.target);
+
     } else{
         let char = event.target;
         char.classList.toggle('clicked');
@@ -40,6 +42,10 @@ function buttonClick(event){
             updateDisplay(char);
         };
     }
+}
+
+function addOperator(operator){
+    console.log(operator);
 }
 
 function updateDisplay(button){
