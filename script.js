@@ -22,7 +22,9 @@ function clearDisplay(){
 function checkButton(event){
     if(event.key === "Escape"){
         clearDisplay();
-    } else if(Number(event.key)){
+    }else if(event.parentNode.classList === "operators"){
+        console.log(event);
+    }else if(Number(event.key)){
         updateDisplay(event);
     }
 }
