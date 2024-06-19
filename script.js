@@ -2,6 +2,7 @@ const numbers = Array.from(document.querySelector('.numbers').children);
 const operators = Array.from(document.querySelector('.operators').children);
 const display = document.querySelector('.displayText');
 const clear = document.querySelector('.clear');
+const operationSymbols = ['+', '-', '*', '/', 'Enter'];
 let char = '';
 let firstString = '';
 let secondString = '';
@@ -13,6 +14,8 @@ numbers.forEach(number => number.addEventListener('mouseup', buttonClick));
 operators.forEach(operator => operator.addEventListener('mousedown', buttonClick));
 operators.forEach(operator => operator.addEventListener('mouseup', buttonClick));
 document.addEventListener('keydown', checkButton);
+
+// document.addEventListener('keydown', key => console.log(key));
 
 function clearDisplay(){
     display.textContent = '';
@@ -59,7 +62,7 @@ function checkButton(event){
         clearDisplay();
     }else if(event.key === "Backspace"){
         undo();
-    }else if(Number(event.key)){
+    }else if(Number(event.key) || operationSymbols.includes(event.key) || event.key === '0'){
         updateDisplay(event);
     }
 }
@@ -95,23 +98,49 @@ function addOperator(nextOperator){
 }
 
 function updateDisplay(button){
-    if(button.key){
+    if(button.type === 'keydown'){
         char = button.key
-        console.log(button);
+        console.log(char);
     } else{
         char = button.textContent;
+        console.log(button);
     }
 
-    if(button.parentNode.classList.value !== 'operators'){
+    if(!button.key){
+        if(button.parentNode.classList.value !== 'operators'){
+            if(!operator){
+                firstString += char;
+                display.textContent += char;
+                console.log(firstString);
+
+            } else{
+                secondString += char;
+                display.textContent += char;
+                console.log(secondString);
+            }
+        }
+    } else if(Number(button.key) || button.key === '0'){
         if(!operator){
             firstString += char;
             display.textContent += char;
-            console.log(firstString);
-
         } else{
             secondString += char;
             display.textContent += char;
-            console.log(secondString);
+        }
+    } else if(operationSymbols.includes(char)){
+        console.log(char);
+        
+        if(char === '*'){
+            addOperator('x');
+
+        } else if(char === '/'){
+            addOperator('÷');
+
+        } else if(char === 'Enter'){
+            addOperator('=');
+
+        } else{
+            addOperator(char);
         }
     }
 }
