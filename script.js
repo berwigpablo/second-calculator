@@ -71,6 +71,9 @@ function buttonClick(event){
     }else if(event.target.parentNode.classList.value === "operators"){
         if(event.type === "mouseup"){
             addOperator(event.target.textContent);
+            event.target.classList.toggle('clicked');
+        } else{
+            event.target.classList.toggle('clicked');
         }
     }else{
         let char = event.target;
@@ -85,7 +88,7 @@ function buttonClick(event){
 function addOperator(nextOperator){
     if(operator || nextOperator === '='){
         operate(nextOperator);
-    } else{
+    } else if(firstString){
         operator = nextOperator;
         display.textContent += operator;
     }
@@ -94,6 +97,7 @@ function addOperator(nextOperator){
 function updateDisplay(button){
     if(button.key){
         char = button.key
+        console.log(button);
     } else{
         char = button.textContent;
     }
@@ -116,7 +120,17 @@ function operate(nextOperator){
     if(nextOperator === '=' && !operator){
         result = firstString;
         nextOperator = '';
-        console.log(nextOperator, operator);
+        return
+
+    }else if(nextOperator === '=' && operator && !secondString){
+        result = firstString
+        operator = '';
+        display.textContent = result
+        return
+    }
+
+    if(nextOperator && !secondString){
+        return
     }
 
     if(operator === '+'){
