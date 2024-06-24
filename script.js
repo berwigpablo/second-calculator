@@ -143,6 +143,10 @@ function updateDisplay(button){
         return
     }
 
+    if(char === '.' && numOfChar.includes('.')){
+        return
+    }
+
     if(!button.key){
         if(button.parentNode.classList.value !== 'operators'){
             if(!operator){
