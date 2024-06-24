@@ -18,11 +18,33 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 @font-face{
     font-family: calculatorFont;
     src: url(./font/Calculator.ttf);
+}
+
+@font-face{
+    font-family: technology;
+    src: url(./font/technology.bold.ttf);
+}
+
+.instructions{
+    font-family: technology;
+    letter-spacing: 2px;
+    width: 460px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#esc, #backspace{
+    gap: 15px;
+    display: flex;
+    align-items: center;
 }
 
 .calculator{
@@ -99,7 +121,6 @@ button.dot{
     width: 90px;
     gap: 15px;
     display: flex;
-    /* flex-wrap: wrap; */
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;

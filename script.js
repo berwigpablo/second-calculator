@@ -14,8 +14,32 @@ numbers.forEach(number => number.addEventListener('mouseup', buttonClick));
 operators.forEach(operator => operator.addEventListener('mousedown', buttonClick));
 operators.forEach(operator => operator.addEventListener('mouseup', buttonClick));
 document.addEventListener('keydown', checkButton);
+document.addEventListener('keydown', buttonPress);
+document.addEventListener('keyup', buttonPress);
 
-// document.addEventListener('keydown', key => console.log(key));
+function buttonPress(button){
+    if(Number(button.key) || button.key === '0'){
+        let buttonPress = numbers.filter(number => number.textContent === button.key);
+        buttonPress[0].classList.toggle('clicked');
+    } else if(button.key === ','){
+        let buttonPress = numbers.filter(number => number.textContent === '.');
+        buttonPress[0].classList.toggle('clicked');
+    } else if(operationSymbols.includes(button.key)){
+        if(button.key === '*'){
+            let buttonPress = operators.filter(operator => operator.textContent === 'x');
+            buttonPress[0].classList.toggle('clicked');    
+        } else if(button.key === '/'){
+            let buttonPress = operators.filter(operator => operator.textContent === '÷');
+            buttonPress[0].classList.toggle('clicked');    
+        } else if(button.key === 'Enter'){
+            let buttonPress = operators.filter(operator => operator.textContent === '=');
+            buttonPress[0].classList.toggle('clicked');
+        }else{
+            let buttonPress = operators.filter(operator => operator.textContent === button.key);
+            buttonPress[0].classList.toggle('clicked');
+        }
+    }
+}
 
 function clearDisplay(){
     display.textContent = '';
@@ -30,8 +54,9 @@ function undo(){
     let undoString = '';
 
     if(secondString){
-        undoString = secondString.split('').splice(1, secondString.length - 1).join('');
+        undoString = secondString.split('').splice(0, secondString.length - 1).join('');
         secondString = undoString;
+
         
         display.textContent = firstString + operator + secondString;
 
@@ -45,8 +70,7 @@ function undo(){
             display.textContent = '';
 
         }else{
-            console.log(firstString);
-            undoString = firstString.split('').splice(1, firstString.length - 1).join('');
+            undoString = firstString.split('').splice(0, firstString.length - 1).join('');
             firstString = undoString;
 
             display.textContent = firstString;
@@ -62,7 +86,7 @@ function checkButton(event){
         clearDisplay();
     }else if(event.key === "Backspace"){
         undo();
-    }else if(Number(event.key) || operationSymbols.includes(event.key) || event.key === '0'){
+    }else if(Number(event.key) || operationSymbols.includes(event.key) || event.key === '0' || event.key === ','){
         updateDisplay(event);
     }
 }
@@ -99,11 +123,24 @@ function addOperator(nextOperator){
 
 function updateDisplay(button){
     if(button.type === 'keydown'){
-        char = button.key
-        console.log(char);
+        if(button.key === ','){
+            char = '.';
+
+        } else{
+            char = button.key
+        }
     } else{
         char = button.textContent;
-        console.log(button);
+    }
+
+    let numOfChar = firstString + operator + secondString;
+    console.log(numOfChar.length);
+    
+    if(numOfChar.length === 30 && char === 'Enter'){
+        addOperator('=');
+        return
+    }else if(numOfChar.length === 30){
+        return
     }
 
     if(!button.key){
@@ -111,15 +148,13 @@ function updateDisplay(button){
             if(!operator){
                 firstString += char;
                 display.textContent += char;
-                console.log(firstString);
 
             } else{
                 secondString += char;
                 display.textContent += char;
-                console.log(secondString);
             }
         }
-    } else if(Number(button.key) || button.key === '0'){
+    } else if(Number(button.key) || button.key === '0' || button.key === ','){
         if(!operator){
             firstString += char;
             display.textContent += char;
@@ -128,7 +163,6 @@ function updateDisplay(button){
             display.textContent += char;
         }
     } else if(operationSymbols.includes(char)){
-        console.log(char);
         
         if(char === '*'){
             addOperator('x');
@@ -164,10 +198,18 @@ function operate(nextOperator){
 
     if(operator === '+'){
         result = Number(firstString) + Number(secondString);
+
     } else if(operator === '-'){
         result = Number(firstString) - Number(secondString);
+
     } else if(operator === '÷'){
-        result = Number(firstString) / Number(secondString);
+        if(secondString === '0'){
+            display.textContent = 'DIVISON BY 0 NOT ALLOWED';
+            setTimeout(clearDisplay, 400);
+            return
+        } else{
+            result = Number(firstString) / Number(secondString);
+        }
     } else if(operator === 'x'){
         result = Number(firstString) * Number(secondString);
     }
